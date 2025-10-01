@@ -1,0 +1,91 @@
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+body {
+   font-family: Arial, sans-serif;
+   line-height: 1.6;
+   border: 1px solid black;
+   text-align: center;
+   border-radius: 10px;
+   margin: 10px;
+}
+
+.header-table {
+    background-color: #ADD8E6;
+}
+
+.container {
+    padding: 20px;
+}
+
+#day-week {
+    text-decoration: underline;
+}
+
+.table {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+    background-color: rgb(222, 230, 207);
+}
+
+.table-content {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    gap: 2px;
+    margin-bottom: 5;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.table-header {
+    background-color: rgb(203, 221, 167);
+    padding: 0 5;
+    width: 100;
+    text-align: center;
+}
+
+.card {
+    background-color: rgb(222, 230, 207);
+    text-align: center;
+    width: 100;
+    padding: 10 5;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.days {
+    list-style-type: none;
+    display: flex;
+    justify-align: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.day-table-content .days {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+.days li.active {
+    background: #ADD8E6;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
