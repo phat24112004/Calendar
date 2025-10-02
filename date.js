@@ -53,6 +53,11 @@ const renderCalendar = () => {
             let selectedDate = new Date(date.getFullYear(), date.getMonth(), dayText);
             let weekdayIndex = selectedDate.getDay();
             dayWeek.textContent = dayOfWeeks[weekdayIndex];
+            
+            document.querySelectorAll(".day-item").forEach(ele => {
+                ele.classList.remove("active")
+            });
+            ele.classList.add("active");
         }); 
     });
 };
