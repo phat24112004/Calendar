@@ -13,6 +13,7 @@ const confirmBtn = document.getElementById("confirm-button");
 const resetDate = document.getElementById("reset-date");
 
 let date = new Date();
+let activeDay = date.getDate();
 
 const months = [
     "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4",
@@ -30,17 +31,27 @@ const renderCalendar = () => {
     const currMonth = date.getMonth();
     const firstDayOfMonth = new Date(currYear, currMonth, 1).getDay();
     const lastDateOfMonth = new Date(currYear, currMonth + 1, 0).getDate();
+    const lastDateOfPrevMonth = new Date(currYear, currMonth, 0).getDate();
     let liTag = "";
 
-    for (let i = 0; i < firstDayOfMonth; i++) {
-        liTag += `<li></li>`;
+    if (activeDay > lastDateOfMonth) {
+        activeDay = lastDateOfMonth;
+    }
+
+    for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+        liTag += `<li class="hid day-item">${lastDateOfPrevMonth - i}</li>`;
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
         let isToday = i === new Date().getDate() &&
-                      currMonth === new Date().getMonth() &&
-                      currYear === new Date().getFullYear() ? "active" : "";
+                  currMonth === new Date().getMonth() &&
+                  currYear === new Date().getFullYear() ? "active" : "";
         liTag += `<li class="day-item ${isToday}">${i}</li>`;
+    }
+
+    const lastDayOfMonth = new Date(currYear, currMonth, lastDateOfMonth).getDay();
+    for (let i = 1; i < 7 - lastDayOfMonth; i++) {
+        liTag += `<li class="hid day-item">${i}</li>`;
     }
 
     currentDate.textContent = `${months[currMonth]} ${currYear}`;
@@ -48,19 +59,30 @@ const renderCalendar = () => {
 
     document.querySelectorAll(".day-item").forEach(ele => { 
         ele.addEventListener("click", function () { 
-            let dayText = this.textContent;
+            document.querySelectorAll(".day-item").forEach(ele => {
+                ele.classList.remove("active");
+            });
+            ele.classList.add("active");
+            if (ele.classList.contains("hid")) {
+                return;
+            };
+            let dayText = ele.textContent;
+            activeDay = dayText;
             dateHeader.textContent = dayText;
             let selectedDate = new Date(date.getFullYear(), date.getMonth(), dayText);
             let weekdayIndex = selectedDate.getDay();
             dayWeek.textContent = dayOfWeeks[weekdayIndex];
-            
-            document.querySelectorAll(".day-item").forEach(ele => {
-                ele.classList.remove("active")
-            });
-            ele.classList.add("active");
         }); 
     });
-};
+
+    document.querySelectorAll(".day-item").forEach(ele => {
+        if (!ele.classList.contains("hid") && ele.textContent === String(activeDay)) {
+            ele.classList.add("active");
+        } else {
+            ele.classList.remove("active");
+        }
+    });
+};  
 
 prevYear.addEventListener("click", function() {
     let currentYear = date.getFullYear();
@@ -106,6 +128,7 @@ for (let i = 1; i <= 31; i++) {
 
 resetDate.addEventListener("click", function() {
     date = new Date();
+    activeDay = date.getDate();
     dateHeader.textContent = date.getDate();
     dayWeek.textContent = dayOfWeeks[date.getDay()];
     renderCalendar();
@@ -117,10 +140,15 @@ confirmBtn.addEventListener("click", function() {
     const year = years.value;
 
     const selectedDate = new Date(year, month - 1, day);
-    date = selectedDate;
 
-    dateHeader.textContent = day;
-    dayWeek.textContent = dayOfWeeks[selectedDate.getDay()];
+    if (selectedDate.getDate() != day || selectedDate.getMonth() != month - 1 || selectedDate.getFullYear() != year) {
+        alert("err");
+    } else {
+        date = selectedDate;
+        activeDay = day;
+        dateHeader.textContent = day;
+        dayWeek.textContent = dayOfWeeks[selectedDate.getDay()];
+    }
     renderCalendar();
 });
 
